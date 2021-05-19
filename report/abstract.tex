@@ -1,0 +1,29 @@
+% Также можно использовать \Referat, как в оригинале
+\Referat
+
+\hfill
+
+
+
+Отчёт содержит \pageref{LastPage}\,~страниц%
+    \ifnum \totfig >0
+    , \totfig~рисунка%
+    \fi
+    \ifnum \tottab >0
+    , \tottab~таблицы%
+    \fi
+    %
+    \ifnum \totbib >0
+    , \totbib~источников%
+    \fi
+    %
+    \ifnum \totapp >0
+    , \totapp~прил.%
+    \else
+    .%
+    \fi
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "rpz"
+%%% End: 
