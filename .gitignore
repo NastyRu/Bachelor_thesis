@@ -4,6 +4,9 @@
 # Images
 training_data/
 
+# weights
+*.h5
+
 # Latex
 ## Core latex/pdflatex auxiliary files:
 *.aux
