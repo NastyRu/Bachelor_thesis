@@ -1,6 +1,9 @@
 # iOS files
 .DS_Store
 
+# Images
+training_data/
+
 # Latex
 ## Core latex/pdflatex auxiliary files:
 *.aux
