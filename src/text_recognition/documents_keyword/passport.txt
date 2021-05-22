@@ -1,0 +1,31 @@
+Российская федерация
+Russian federation
+Паспорт
+Passport
+Тип
+Type
+Код государства выдачи
+Code of issuing State
+Номер паспорта
+Passport №
+Фамилия
+Surname
+Имя
+Given names
+Гражданство
+Nationality
+Пол
+Sex
+Дата рождения
+Date of birth
+Место рождения
+Place of birth
+Дата выдачи
+Date of issue
+Орган, выдавший документ
+Authority
+Дата окончания срока
+Date of expiry
+Подпись владельца
+Holder’s signature
+P<RUS
