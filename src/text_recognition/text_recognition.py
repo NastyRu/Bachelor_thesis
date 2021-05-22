@@ -3,13 +3,6 @@ import numpy as np
 import cv2
 
 
-def bw_image(path):
-    im_gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-    (thresh, im_bw) = cv2.threshold(im_gray, 128, 255,
-                                    cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-    return im_bw
-
-
 def get_text_from_document(path):
     image = cv2.imread(path)
 
@@ -23,24 +16,6 @@ def get_text_from_document(path):
 
     text2 = pytesseract.image_to_string(norm_img, lang='rus')
     return text1 + text2
-
-
-def get_visa_class(path):
-    image = bw_image(path)
-    visa = bw_image("documents_keypoints/visa.png")  # fra
-    visum = bw_image("documents_keypoints/visum.png")  # deu
-    visto = bw_image("documents_keypoints/visto.png")  # ita
-    visado = bw_image("documents_keypoints/visado.png")  # esp
-
-    visto_res = cv2.matchTemplate(image, visto, cv2.TM_CCOEFF_NORMED)
-    visum_res = cv2.matchTemplate(image, visum, cv2.TM_CCOEFF_NORMED)
-    visado_res = cv2.matchTemplate(image, visado, cv2.TM_CCOEFF_NORMED)
-    visa_res = cv2.matchTemplate(image, visa, cv2.TM_CCOEFF_NORMED)
-
-    visas = {7: visto_res, 8: visum_res, 9: visado_res, 10: visa_res}
-
-    max_key = max(visas, key=visas.get)
-    return max_key
 
 
 def main():
@@ -58,7 +33,6 @@ def main():
 
     path = ""
     text = get_text_from_document(path)
-    visa_class = get_visa_class(path)
 
 
 if __name__ == "__main__":
