@@ -5,7 +5,8 @@ import cv2
 
 def bw_image(path):
     im_gray = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-    (thresh, im_bw) = cv2.threshold(im_gray, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    (thresh, im_bw) = cv2.threshold(im_gray, 128, 255,
+                                    cv2.THRESH_BINARY | cv2.THRESH_OTSU)
     return im_bw
 
 
@@ -26,10 +27,10 @@ def get_text_from_document(path):
 
 def get_visa_class(path):
     image = bw_image(path)
-    visa = bw_image("documents/visa.png")  # fra
-    visum = bw_image("documents/visum.png")  # deu
-    visto = bw_image("documents/visto.png")  # ita
-    visado = bw_image("documents/visado.png")  # esp
+    visa = bw_image("documents_keypoints/visa.png")  # fra
+    visum = bw_image("documents_keypoints/visum.png")  # deu
+    visto = bw_image("documents_keypoints/visto.png")  # ita
+    visado = bw_image("documents_keypoints/visado.png")  # esp
 
     visto_res = cv2.matchTemplate(image, visto, cv2.TM_CCOEFF_NORMED)
     visum_res = cv2.matchTemplate(image, visum, cv2.TM_CCOEFF_NORMED)
