@@ -3,7 +3,7 @@ from tensorflow.keras.layers import Convolution2D, MaxPooling2D, Input, \
                          Flatten
 from tensorflow.keras.models import Model
 
-CLASS_NUM = 5
+CLASS_NUM = 11
 
 
 class InceptionV1():
