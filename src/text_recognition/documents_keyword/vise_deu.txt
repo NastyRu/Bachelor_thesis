@@ -1,12 +1,6 @@
 gulting for
 valable pour
 valid for
-vom
-du
-rom
-bis
-au
-until
 art des visums
 type de visa
 type of visa
@@ -19,9 +13,6 @@ duration of stay
 ausgestellt in
 delivre a
 issued in
-am
-le
-on
 number des reisepasses
 numero de passeport
 number of passport

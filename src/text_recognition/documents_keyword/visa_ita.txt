@@ -1,12 +1,6 @@
 valido per
 valable pour
 valid for
-dal
-du
-from
-al
-au
-until
 tipo di visto
 type de visa
 type of visa
@@ -19,9 +13,6 @@ duration of stay
 rilasciato a
 delivre a
 issued in
-il
-le
-on
 numero del passaporto
 numero de passeport
 number of passport

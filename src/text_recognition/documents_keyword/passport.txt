@@ -27,5 +27,5 @@ Authority
 Дата окончания срока
 Date of expiry
 Подпись владельца
-Holder’s signature
+Holder's signature
 P<RUS
