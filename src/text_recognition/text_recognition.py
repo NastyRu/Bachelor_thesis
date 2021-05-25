@@ -18,24 +18,7 @@ def get_text_from_document(path, lang):
     return text1 + text2
 
 
-def main():
-    documents = {"passport1": 0,
-                 "passport2": 1,
-                 "passport3": 2,
-                 "vu1": 3,
-                 "vu2": 4,
-                 "vu3": 5,
-                 "passport": 6,
-                 "visa_fra": 7,
-                 "vise_deu": 8,
-                 "visa_ita": 9,
-                 "visa_esp": 10}
-
-    path = "/Users/anastasia/Desktop/test1.png"
+def get_all_text(path):
     text1 = get_text_from_document(path, 'rus')
     text2 = get_text_from_document(path, 'eng')
-    print(text1 + text2)
-
-
-if __name__ == "__main__":
-    main()
+    return text1 + text2
