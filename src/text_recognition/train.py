@@ -106,7 +106,7 @@ def main():
                                    data, labels)
     data, labels = make_train_data(6, glob.glob('training_data/vu3/*.*'),
                                    data, labels)
-    data, labels = make_train_data(7, glob.glob('training_data/visa_d/*.*'),
+    data, labels = make_train_data(7, glob.glob('training_data/visa_deu/*.*'),
                                    data, labels)
     data, labels = make_train_data(8, glob.glob('training_data/visa_esp/*.*'),
                                    data, labels)
