@@ -12,7 +12,6 @@ def main():
     
     model_name = 'googlenet_weights.h5'
     model = InceptionV1().architecture()
-    model.summary()
     model.load_weights(model_name)
 
     img = mpimg.imread(path)
