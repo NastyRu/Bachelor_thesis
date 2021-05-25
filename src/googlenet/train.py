@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.optimizers import Adam
-from googlenet.inception_v1 import InceptionV1
+from inception_v1 import InceptionV1
 import glob
 from mlxtend.plotting import plot_confusion_matrix
 from sklearn.metrics import confusion_matrix
@@ -33,15 +33,15 @@ def get_f1_measure(class_num, y_final, y_test):
     for i in range(class_num):
         try:
             p = f1_tp[i] / (f1_tp[i] + f1_fp[i])
-        except Exception():
+        except:
             p = 0
         try:
             r = f1_tp[i] / (f1_tp[i] + f1_fn[i])
-        except Exception():
+        except:
             r = 0
         try:
             f1[i] = 2 * p * r / (p + r)
-        except Exception():
+        except:
             f1[i] = 0
     return f1
 
@@ -141,7 +141,7 @@ def main():
                   metrics=['accuracy'])
 
     model.fit(x_train, y_train,
-              epochs=20, steps_per_epoch=epoch_steps,
+              epochs=12, steps_per_epoch=epoch_steps,
               validation_data=(x_valid, y_valid))
 
     model.save(model_name)
