@@ -33,15 +33,15 @@ def get_f1_measure(class_num, y_final, y_test):
     for i in range(class_num):
         try:
             p = f1_tp[i] / (f1_tp[i] + f1_fp[i])
-        except Exception():
+        except:
             p = 0
         try:
             r = f1_tp[i] / (f1_tp[i] + f1_fn[i])
-        except Exception():
+        except:
             r = 0
         try:
             f1[i] = 2 * p * r / (p + r)
-        except Exception():
+        except:
             f1[i] = 0
     return f1
 
