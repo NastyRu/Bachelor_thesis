@@ -141,7 +141,7 @@ def main():
                   metrics=['accuracy'])
 
     model.fit(x_train, y_train,
-              epochs=20, steps_per_epoch=epoch_steps,
+              epochs=12, steps_per_epoch=epoch_steps,
               validation_data=(x_valid, y_valid))
 
     model.save(model_name)
