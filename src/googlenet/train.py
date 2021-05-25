@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.optimizers import Adam
-from googlenet.inception_v1 import InceptionV1
+from inception_v1 import InceptionV1
 import glob
 from mlxtend.plotting import plot_confusion_matrix
 from sklearn.metrics import confusion_matrix
