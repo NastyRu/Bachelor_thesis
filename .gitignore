@@ -6,6 +6,8 @@ training_data/
 
 # weights
 *.h5
+*.pkl
+*.sav
 
 # Latex
 ## Core latex/pdflatex auxiliary files:
