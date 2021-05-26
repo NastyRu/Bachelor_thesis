@@ -1,39 +1,111 @@
-import numpy as np
-from skimage.transform import resize
-import matplotlib.image as mpimg
-from googlenet.inception_v1 import InceptionV1
-from text_recognition.text_recognition import get_all_text
-from text_recognition.train import text_preprocessing
-import pickle
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, \
+                            QVBoxLayout, QFileDialog
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QPixmap, QFont
+
+WIDTH = 1000
+HEIGHT = 700
 
 
-def main():
-    path = "10.jpeg"
-    
-    model_name = 'googlenet_weights.h5'
-    model = InceptionV1().architecture()
-    model.load_weights(model_name)
+class ImageLabel(QLabel):
+    clicked = pyqtSignal()
 
-    img = mpimg.imread(path)
-    img = resize(img, (224, 224, 3))
-    img = img.reshape(1, 224, 224, 3)
-    out = model.predict(img)
+    def __init__(self):
+        super().__init__()
 
-    predicted_label = np.argmax(out[2])
-    print('Predicted Class: ', predicted_label)
+        self.setAlignment(Qt.AlignCenter)
+        self.setText('\n\n\n\n\n\n\n Перетащите изображение сюда или нажмите для выбора')
+        self.setFont(QFont('Arial', 30))
+        self.setStyleSheet('''
+                            QLabel {
+                                background-image: url("background.png");
+                                color: rgb(168, 168, 168);
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                border: 2px dashed #aaa;
+                            }
+                            ''')
 
-    labelencode = pickle.load(open('labelencoder_fitted.pkl', 'rb'))
-    tfidf_vect = pickle.load(open('Tfidf_vect_fitted.pkl', 'rb'))
-    SVM = pickle.load(open('svm_trained_model.sav', 'rb'))
+    def setPixmap(self, image):
+        super().setPixmap(image)
 
-    text = get_all_text(path)
-    text_processed = text_preprocessing(text)
-    text_processed_vectorized = tfidf_vect.transform([text_processed])
-
-    prediction_SVM = SVM.predict(text_processed_vectorized)
-
-    print("Prediction from SVM Model:", labelencode.inverse_transform(prediction_SVM)[0])
+    def mouseReleaseEvent(self, event):
+        self.clicked.emit()
 
 
-if __name__ == "__main__":
-    main()
+class MainWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.resize(WIDTH, HEIGHT)
+        self.setAcceptDrops(True)
+        self.setWindowTitle("Классификатор документов")
+
+        layout = QVBoxLayout()
+
+        self.photo_viewer = ImageLabel()
+        layout.addWidget(self.photo_viewer)
+        self.photo_viewer.clicked.connect(self.get_file)
+
+        self.output = QLabel()
+        self.output.setText('Ничего не загружено')
+        self.output.setFont(QFont('Arial', 20))
+        self.output.setFixedSize(1000, 25)
+        self.output.setAlignment(Qt.AlignCenter)
+        self.setStyleSheet('''
+                            QLabel {
+                                color: rgb(64, 64, 64);
+                            }
+                            ы''')
+        layout.addWidget(self.output)
+
+        self.setLayout(layout)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasImage:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasImage:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasImage:
+            event.setDropAction(Qt.CopyAction)
+            file_path = event.mimeData().urls()[0].toLocalFile()
+            self.set_image(file_path)
+            event.accept()
+        else:
+            event.ignore()
+
+    def set_image(self, file_path):
+        pixmap = self.get_pixmap(file_path)
+        if pixmap:
+            self.photo_viewer.setPixmap(pixmap)
+
+    def get_file(self):
+        file_path = QFileDialog.getOpenFileName(
+            self, 'Open file',
+            '/Users/anastasia/Desktop/Bachelor_thesis/src/examples',
+            'Image files (*.jpg *.png *.jpeg)')
+        self.set_image(file_path[0])
+
+    def get_pixmap(self, file_path):
+        if file_path == "":
+            return None
+        pixmap = QPixmap(file_path)
+        return pixmap.scaled(WIDTH, HEIGHT, Qt.KeepAspectRatio)
+
+    def update_label(self, path):
+        self.output.setText('Ничего не загружено')
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ui = MainWidget()
+    ui.show()
+    sys.exit(app.exec_())
