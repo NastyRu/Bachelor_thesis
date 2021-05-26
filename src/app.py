@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, \
                             QVBoxLayout, QFileDialog
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap, QFont
-from prediction import predict_class
+from prediction import PredictionClass
 
 
 WIDTH = 1000
@@ -42,6 +42,8 @@ class MainWidget(QWidget):
         self.resize(WIDTH, HEIGHT)
         self.setAcceptDrops(True)
         self.setWindowTitle("Классификатор документов")
+
+        self.prediction_class = PredictionClass()
 
         layout = QVBoxLayout()
 
@@ -88,7 +90,7 @@ class MainWidget(QWidget):
         pixmap = self.get_pixmap(file_path)
         if pixmap:
             self.photo_viewer.setPixmap(pixmap)
-            self.output.setText(predict_class(file_path))
+            self.output.setText(self.prediction_class.predict_class(file_path))
 
     def get_file(self):
         file_path = QFileDialog.getOpenFileName(

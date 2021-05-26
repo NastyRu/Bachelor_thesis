@@ -7,46 +7,43 @@ from text_recognition.train import text_preprocessing
 import pickle
 
 
-def prediction(path, model, tfidf_vect, SVM, labelencode):
-    img = mpimg.imread(path)
-    img = resize(img, (224, 224, 3))
-    img = img.reshape(1, 224, 224, 3)
-    out = model.predict(img)
+class PredictionClass():
+    def __init__(self):
+        self.model = InceptionV1().architecture()
+        self.model.load_weights('googlenet_weights.h5')
 
-    predicted_label = np.argmax(out[2])
+        self.labelencode = pickle.load(open('labelencoder_fitted.pkl', 'rb'))
+        self.tfidf_vect = pickle.load(open('Tfidf_vect_fitted.pkl', 'rb'))
+        self.SVM = pickle.load(open('svm_trained_model.sav', 'rb'))
 
-    if (predicted_label == 7):
-        text = get_all_text(path)
-        text_processed = text_preprocessing(text)
-        text_processed_vectorized = tfidf_vect.transform([text_processed])
+        self.documents = {0: "Загранпаспорт",
+                          1: "Страница паспорта с информацией о выдаче",
+                          2: "Страница паспорта с личными данными",
+                          3: "Страница паспорта с пропиской",
+                          4: "Водительское удостоверение, бумажное, 1995-2011",
+                          5: "Водительское удостоверение, пластиковое, 1995-2011",
+                          6: "Водительское удостоверение, новое",
+                          7: "Шенгенская виза, Германия",
+                          8: "Шенгенская виза, Испания",
+                          9: "Шенгенская виза, Франция",
+                          10: "Шенгенская виза, Италия"}
 
-        prediction_SVM = SVM.predict(text_processed_vectorized)
-        predicted_label = labelencode.inverse_transform(prediction_SVM)[0]
+    def predict_class(self, path):
+        img = mpimg.imread(path)
+        img = resize(img, (224, 224, 3))
+        img = img.reshape(1, 224, 224, 3)
+        out = self.model.predict(img)
 
-    return predicted_label
+        predicted_label = np.argmax(out[2])
 
+        if (predicted_label == 7):
+            text = get_all_text(path)
+            text_processed = text_preprocessing(text)
+            text_processed_vectorized = self.tfidf_vect \
+                                            .transform([text_processed])
 
-def predict_class(path):
-    documents = {0: "Загранпаспорт",
-                 1: "Страница паспорта с информацией о выдаче",
-                 2: "Страница паспорта с личными данными",
-                 3: "Страница паспорта с пропиской",
-                 4: "Водительское удостоверение, бумажное, 1995-2011",
-                 5: "Водительское удостоверение, пластиковое, 1995-2011",
-                 6: "Водительское удостоверение, новое",
-                 7: "Шенгенская виза, Германия",
-                 8: "Шенгенская виза, Испания",
-                 9: "Шенгенская виза, Франция",
-                 10: "Шенгенская виза, Италия"}
+            prediction_SVM = self.SVM.predict(text_processed_vectorized)
+            predicted_label = self.labelencode \
+                                  .inverse_transform(prediction_SVM)[0]
 
-    model_name = 'googlenet_weights.h5'
-    model = InceptionV1().architecture()
-    model.load_weights(model_name)
-
-    labelencode = pickle.load(open('labelencoder_fitted.pkl', 'rb'))
-    tfidf_vect = pickle.load(open('Tfidf_vect_fitted.pkl', 'rb'))
-    SVM = pickle.load(open('svm_trained_model.sav', 'rb'))
-
-    key = prediction(path, model, tfidf_vect, SVM, labelencode)
-
-    return documents.get(key)
+        return self.documents.get(predicted_label)
