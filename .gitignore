@@ -3,6 +3,7 @@
 
 # Images
 training_data/
+examples/
 
 # weights
 *.h5
