@@ -107,11 +107,11 @@ def main():
                                    data, labels)
     data, labels = make_train_data(7, glob.glob('training_data/visa_deu/*.*'),
                                    data, labels)
-    data, labels = make_train_data(8, glob.glob('training_data/visa_esp/*.*'),
+    data, labels = make_train_data(7, glob.glob('training_data/visa_esp/*.*'),
                                    data, labels)
-    data, labels = make_train_data(9, glob.glob('training_data/visa_fra/*.*'),
+    data, labels = make_train_data(7, glob.glob('training_data/visa_fra/*.*'),
                                    data, labels)
-    data, labels = make_train_data(10, glob.glob('training_data/visa_ita/*.*'),
+    data, labels = make_train_data(7, glob.glob('training_data/visa_ita/*.*'),
                                    data, labels)
 
     data = np.array(data)
@@ -131,7 +131,7 @@ def main():
     batch_size = 8
     epoch_steps = int(x_train.shape[0] / batch_size)
     model_name = 'googlenet_weights.h5'
-    class_num = 11
+    class_num = 8
 
     model = InceptionV1().architecture()
     model.summary()
