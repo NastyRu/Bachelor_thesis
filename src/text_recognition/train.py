@@ -92,20 +92,6 @@ def main():
     data = []
     labels = []
 
-    data, labels = make_train_data(0, glob.glob('training_data/passport/*.*'),
-                                   data, labels)
-    data, labels = make_train_data(1, glob.glob('training_data/passport1/*.*'),
-                                   data, labels)
-    data, labels = make_train_data(2, glob.glob('training_data/passport2/*.*'),
-                                   data, labels)
-    data, labels = make_train_data(3, glob.glob('training_data/passport3/*.*'),
-                                   data, labels)
-    data, labels = make_train_data(4, glob.glob('training_data/vu1/*.*'),
-                                   data, labels)
-    data, labels = make_train_data(5, glob.glob('training_data/vu2/*.*'),
-                                   data, labels)
-    data, labels = make_train_data(6, glob.glob('training_data/vu3/*.*'),
-                                   data, labels)
     data, labels = make_train_data(7, glob.glob('training_data/visa_deu/*.*'),
                                    data, labels)
     data, labels = make_train_data(8, glob.glob('training_data/visa_esp/*.*'),
@@ -120,7 +106,7 @@ def main():
     x_train, x_test, y_train, y_test = train_test_split(corpus['text_final'],
                                                         corpus['label'],
                                                         test_size=0.3,
-                                                        random_state=42)
+                                                        random_state=36)
 
     encoder = LabelEncoder()
     y_train = encoder.fit_transform(y_train)
@@ -135,13 +121,8 @@ def main():
     SVM = svm.SVC(C=1.0, kernel='linear', degree=3, gamma='auto')
     SVM.fit(x_train_tfidf, y_train)
 
-    # saving encoder to disk
     pickle.dump(encoder, open('labelencoder_fitted.pkl', 'wb'))
-
-    # saving TFIDF Vectorizer to disk
     pickle.dump(tfidf_vect, open('tfidf_vect_fitted.pkl', 'wb'))
-
-    # saving the model to disk
     pickle.dump(SVM, open('svm_trained_model.sav', 'wb'))
 
     predictions_SVM = SVM.predict(x_test_tfidf)
@@ -152,7 +133,7 @@ def main():
     plot_confusion_matrix(mat, figsize=(9, 9), colorbar=True)
     plt.show()
 
-    print(get_f1_measure(11, predictions_SVM, y_test))
+    print(get_f1_measure(4, predictions_SVM, y_test))
 
 
 if __name__ == "__main__":
