@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, \
                             QVBoxLayout, QFileDialog
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap, QFont
+from prediction import predict_class
+
 
 WIDTH = 1000
 HEIGHT = 700
@@ -86,6 +88,7 @@ class MainWidget(QWidget):
         pixmap = self.get_pixmap(file_path)
         if pixmap:
             self.photo_viewer.setPixmap(pixmap)
+            self.output.setText(predict_class(file_path))
 
     def get_file(self):
         file_path = QFileDialog.getOpenFileName(
