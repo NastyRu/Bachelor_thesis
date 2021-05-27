@@ -12,9 +12,11 @@ y3 = [0.888888888888889, 0.9500000000000001, 0.9565217391304348,
       0.8571428571428572, 0.7499999999999999, 0.6666666666666667,
       0.7272727272727273, 0.9333333333333333]
 
-plt.plot(x, y1, label="visual")
-plt.plot(x, y2, label="text")
-plt.plot(x, y3, label="compose")
+plt.xlabel('Классы')
+plt.ylabel('F1-мера')
+plt.plot(x, y1, label="Визуальный")
+plt.plot(x, y2, label="Текстовый")
+plt.plot(x, y3, label="Композиция")
 
 plt.legend()
 plt.show()
