@@ -25,12 +25,12 @@
 
 \begin{document}
 
-\includepdf[pages=-]{image/titul_practice.pdf}
-\includepdf[pages=-]{image/tz_practice.pdf}
+\includepdf[pages=-]{image/titul.pdf}
+\setcounter{page}{5}
 
 \frontmatter % выключает нумерацию ВСЕГО; здесь начинаются ненумерованные главы: реферат, введение, глоссарий, сокращения и прочее.
 
-%\include{abstract}
+\include{abstract}
 
 \tableofcontents
 %\printnomenclature % Автоматический список сокращений
@@ -42,7 +42,7 @@
 \include{analysis}
 \include{design}
 \include{impl}
-%\include{research}
+\include{research}
 
 \backmatter %% Здесь заканчивается нумерованная часть документа и начинаются ссылки и
             
@@ -53,7 +53,7 @@
 
 \appendix   % Тут идут приложения
 
-%\include{appendix1}
+\include{appendix1}
 
 \end{document}
 
