@@ -1,6 +1,6 @@
 \chapter{Листинги}
 
-\begin{lstlisting}[caption=Модель googlenet , label = lst:googlenet, style=realcode]
+\begin{lstlisting}[caption=Модель googlenet., label = lst:googlenet, style=realcode]
 def architecture(self):
         input = Input(shape=(224, 224, 3))
 
@@ -116,7 +116,7 @@ def architecture(self):
         return Model(inputs=input, outputs=[output, aux1, aux2])
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Предобработка текста, label = lst:text, style=realcode]
+\begin{lstlisting}[caption=Предобработка текста., label = lst:text, style=realcode]
 def text_preprocessing(text):
     text = text.lower()
     text_words_list = word_tokenize(text)
@@ -129,7 +129,7 @@ def text_preprocessing(text):
     return str(clear_words)
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Ансамбль классификаторов, label = lst:concat, style=realcode]
+\begin{lstlisting}[caption=Ансамбль классификаторов., label = lst:concat, style=realcode]
 def predict_class(self, path):
         img = mpimg.imread(path)
         img = resize(img, (224, 224, 3))
