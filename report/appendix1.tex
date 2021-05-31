@@ -1,7 +1,162 @@
-\chapter{Картинки}
+\chapter{Листинги}
 
+\begin{lstlisting}[caption=Модель googlenet , label = lst:googlenet, style=realcode]
+def architecture(self):
+        input = Input(shape=(224, 224, 3))
 
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: "rpz"
-%%% End: 
+        layer = Convolution2D(filters=64,
+                              kernel_size=(7, 7),
+                              strides=2,
+                              padding='same',
+                              activation='relu')(input)
+        layer = MaxPooling2D(pool_size=(3, 3),
+                             strides=2,
+                             padding='same')(layer)
+
+        layer = Convolution2D(filters=64,
+                              kernel_size=(1, 1),
+                              strides=1,
+                              padding='same',
+                              activation='relu')(layer)
+        layer = Convolution2D(filters=192,
+                              kernel_size=(3, 3),
+                              strides=1,
+                              padding='same',
+                              activation='relu')(layer)
+        layer = MaxPooling2D(pool_size=(3, 3),
+                             strides=2,
+                             padding='same')(layer)
+
+        layer = self.Inception(input=layer,
+                               filters_1x1=64,
+                               filters_3x3_reduce=96,
+                               filters_3x3=128,
+                               filters_5x5_reduce=16,
+                               filters_5x5=32,
+                               filters_pool_proj=32)
+        layer = self.Inception(input=layer,
+                               filters_1x1=128,
+                               filters_3x3_reduce=128,
+                               filters_3x3=192,
+                               filters_5x5_reduce=32,
+                               filters_5x5=96,
+                               filters_pool_proj=64)
+        layer = MaxPooling2D(pool_size=(3, 3),
+                             strides=2,
+                             padding='same')(layer)
+
+        layer = self.Inception(input=layer,
+                               filters_1x1=192,
+                               filters_3x3_reduce=96,
+                               filters_3x3=208,
+                               filters_5x5_reduce=16,
+                               filters_5x5=48,
+                               filters_pool_proj=64)
+
+        aux1 = self.Auxiliary(layer)
+
+        layer = self.Inception(input=layer,
+                               filters_1x1=160,
+                               filters_3x3_reduce=112,
+                               filters_3x3=224,
+                               filters_5x5_reduce=24,
+                               filters_5x5=64,
+                               filters_pool_proj=64)
+        layer = self.Inception(input=layer,
+                               filters_1x1=128,
+                               filters_3x3_reduce=128,
+                               filters_3x3=256,
+                               filters_5x5_reduce=24,
+                               filters_5x5=64,
+                               filters_pool_proj=64)
+        layer = self.Inception(input=layer,
+                               filters_1x1=112,
+                               filters_3x3_reduce=144,
+                               filters_3x3=288,
+                               filters_5x5_reduce=32,
+                               filters_5x5=64,
+                               filters_pool_proj=64)
+
+        aux2 = self.Auxiliary(layer)
+
+        layer = self.Inception(input=layer,
+                               filters_1x1=256,
+                               filters_3x3_reduce=160,
+                               filters_3x3=320,
+                               filters_5x5_reduce=32,
+                               filters_5x5=128,
+                               filters_pool_proj=128)
+        layer = MaxPooling2D(pool_size=(3, 3),
+                             strides=2,
+                             padding='same')(layer)
+
+        layer = self.Inception(input=layer,
+                               filters_1x1=256,
+                               filters_3x3_reduce=160,
+                               filters_3x3=320,
+                               filters_5x5_reduce=32,
+                               filters_5x5=128,
+                               filters_pool_proj=128)
+        layer = self.Inception(input=layer,
+                               filters_1x1=384,
+                               filters_3x3_reduce=192,
+                               filters_3x3=384,
+                               filters_5x5_reduce=48,
+                               filters_5x5=128,
+                               filters_pool_proj=128)
+        layer = AveragePooling2D(pool_size=(7, 7),
+                                 strides=1,
+                                 padding='valid')(layer)
+
+        layer = Flatten()(layer)
+        layer = Dropout(rate=0.4)(layer)
+        layer = Dense(units=1000, activation='linear')(layer)
+        output = Dense(units=CLASS_NUM, activation='softmax')(layer)
+
+        return Model(inputs=input, outputs=[output, aux1, aux2])
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Предобработка текста, label = lst:text, style=realcode]
+def text_preprocessing(text):
+    text = text.lower()
+    text_words_list = word_tokenize(text)
+
+    clear_words = []
+    for word in text_words_list:
+        if word not in STOPWORDS:
+            clear_words.append(word)
+
+    return str(clear_words)
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Ансамбль классификаторов, label = lst:concat, style=realcode]
+def predict_class(self, path):
+        img = mpimg.imread(path)
+        img = resize(img, (224, 224, 3))
+        img = img.reshape(1, 224, 224, 3)
+        out = self.model.predict(img)
+
+        predicted_label_visual = np.argmax(out[2])
+        predicted_proba_visual = out[2][0][predicted_label_visual] * \
+                                 self.w1[predicted_label_visual]
+
+        text = get_all_text(path)
+        text_processed = text_preprocessing(text)
+        text_processed_vectorized = self.tfidf_vect \
+                                        .transform([text_processed])
+
+        prediction_SVM = self.SVM.predict(text_processed_vectorized)
+        predicted_label_text = self.labelencode \
+                                   .inverse_transform(prediction_SVM)[0]
+        predicted_proba_text = self.SVM.predict_proba(
+                               text_processed_vectorized)[0] \
+                               [predicted_label_text] * \
+                               self.w2[predicted_label_text]
+
+        if (predicted_proba_text > predicted_proba_visual):
+            predicted_label = predicted_label_text
+        else:
+            predicted_label = predicted_label_visual
+
+        return self.documents.get(predicted_label)
+\end{lstlisting}
