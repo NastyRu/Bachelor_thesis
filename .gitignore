@@ -4,6 +4,8 @@
 # Images
 training_data/
 examples/
+research_data/
+research_data_text/
 
 # weights
 *.h5
