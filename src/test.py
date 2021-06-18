@@ -26,7 +26,8 @@ def prediction(path, model, tfidf_vect, SVM, labelencode):
     predicted_proba_visual = out[2][0][predicted_label_visual] * \
                              w1[predicted_label_visual]
 
-    f = open("research_data_text"+path[13:-4]+"txt", 'r', encoding='utf-8', errors='ignore')
+    f = open("research_data_text" + path[13:-4] + "txt", 'r',
+             encoding='utf-8', errors='ignore')
     text = str(f.readlines())
     f.close()
     text_processed = text_preprocessing(text)
@@ -131,7 +132,10 @@ def main():
     final_visual, final_text, final, test = get_results(10, 'research_data/visa_ita/*.*',
                               final_visual, final_text, final, test, model, tfidf_vect, SVM, labelencode)
 
-    labels = ['Загранпаспорт', 'Паспорт, страница1', 'Паспорт, страница2', 'Паспорт, прописка', 'ВУ, образец1', 'ВУ, образец2', 'ВУ, образец3', 'Виза Германия', 'Виза Испания', 'Виза Франция', 'Виза Италия']
+    labels = ['Загранпаспорт', 'Паспорт, страница1', 'Паспорт, страница2',
+              'Паспорт, прописка', 'ВУ, образец1', 'ВУ, образец2',
+              'ВУ, образец3', 'Виза Германия', 'Виза Испания',
+              'Виза Франция', 'Виза Италия']
 
     mat = confusion_matrix(test, final)
     ax = plt.subplot()
@@ -169,11 +173,6 @@ def main():
     y1 = get_f1_measure(11, final_visual, test)
     y2 = get_f1_measure(11, final_text, test)
     y3 = get_f1_measure(11, final, test)
-    '''random.seed(None)
-    for i in range(len(y1)):
-        y1[i] -= fabs(random.choice([0.04, 0.06, 0.05]))
-        y2[i] -= fabs(random.choice([0.04, 0.06, 0.05]))
-        y3[i] -= fabs(random.choice([0.04, 0.06, 0.05]))'''
     plt.xlabel("Классы")
     plt.ylabel("F1-мера")
     plt.xticks(rotation=45)
