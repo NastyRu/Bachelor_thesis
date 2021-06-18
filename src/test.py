@@ -39,8 +39,7 @@ def prediction(path, model, tfidf_vect, SVM, labelencode):
                            w2[predicted_label_text]
 
     if (predicted_proba_text > predicted_proba_visual):
-        npredicted_label_text = predicted_label_text
-        return predicted_label_visual, npredicted_label_text, predicted_label_text
+        return predicted_label_visual, predicted_label_text, predicted_label_text
     else:
         return predicted_label_visual, predicted_label_text, predicted_label_visual
 

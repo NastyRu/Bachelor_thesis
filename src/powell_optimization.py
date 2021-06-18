@@ -23,7 +23,7 @@ def prediction(path, model, tfidf_vect, SVM, labelencode, w1, w2):
                              w1[predicted_label_visual]
 
     f = open("text_recognition" + path[9:-4] + "txt", 'r', encoding='utf-8', errors='ignore')
-    text = f.readlines()
+    text = str(f.readlines())
     f.close()
     text_processed = text_preprocessing(text)
     text_processed_vectorized = tfidf_vect.transform([text_processed])
